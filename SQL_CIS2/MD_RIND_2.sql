@@ -1,0 +1,34 @@
+CREATE TABLE USER_BANCU.MD_RIND
+(
+  ID_MD         NUMBER                          ,
+  FORM          NUMBER,
+  FORM_VERS     NUMBER,
+  CAPITOL       NUMBER,
+  CAPITOL_VERS  NUMBER,
+  RIND          VARCHAR2(30 BYTE)               ,
+  RIND_VERS     NUMBER,
+  DENUMIRE      VARCHAR2(500 BYTE),
+  DECIMAL_POS   VARCHAR2(35 BYTE),
+  COL_ACTIV     VARCHAR2(35 BYTE),
+  ORDINE        NUMBER,
+  DATA_REG      DATE,
+  STATUT        VARCHAR2(1 BYTE),
+  DINAMIC       VARCHAR2(1 BYTE)
+)
+TABLESPACE TBS_DTI_USERS
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+MONITORING;

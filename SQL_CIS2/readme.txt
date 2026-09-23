@@ -24,4 +24,5 @@ Thank you very much.
 
 
 Buna dimineata prieten drag. 
+https://github.com/androidacvtivity/3-EDU
 In fisierul capitol=1058&capitol_vers=2015_v2.js trebuie de actualizat id_md - unde este cazul. Iti trimit id_md in fisier excel.  

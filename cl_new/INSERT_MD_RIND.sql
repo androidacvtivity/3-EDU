@@ -1,0 +1,56 @@
+ INSERT INTO CIS2.MD_RIND
+ 
+ (
+     ID_MD,
+    FORM,
+    FORM_VERS,
+    CAPITOL,
+    CAPITOL_VERS,
+    RIND,
+    RIND_VERS,
+    DENUMIRE,
+    DECIMAL_POS,
+    COL_ACTIV,
+    ORDINE,
+    DATA_REG,
+    STATUT,
+    DINAMIC
+ )
+ 
+ SELECT 
+ ROWNUM ID_MD, 
+  50  FORM,
+  2000 FORM_VERS,
+  1058  CAPITOL,
+  2015 CAPITOL_VERS,
+  L.ITEM_CODE RIND,
+  2015 RIND_VERS,
+  L.NAME DENUMIRE,
+  '00000000000000000' DECIMAL_POS,
+  '11111111111111111' COL_ACTIV,
+   ROWNUM + 5000 ORDINE,
+   SYSDATE DATA_REG,
+   '1' STATUT,
+   '1' DINAMIC
+  
+ 
+ 
+ FROM CIS2.VW_CLS_CLASS_ITEM L
+ 
+    WHERE 
+    L. CLASS_CODE IN ('SPEC_3EDU')
+       AND L.A01 = '6'
+       
+--      AND L.ITEM_CODE  IN (
+--      '112.1.1',
+--'112.1.2',
+--'113.1.1',
+--'114.1.2',
+--'912.1.2',
+--'912.1.3',
+--'913.2.1',
+--'914.1.4'
+--      )
+       
+       ORDER BY 
+       L.SHOW_ORDER

@@ -21,3 +21,7 @@ The `ID_MD` values and the other required parameters are available in the Excel 
 Please make the changes in GitHub by creating a new version of the file, and then we will pull the changes locally.
 
 Thank you very much.
+
+
+Buna dimineata prieten drag. 
+In fisierul capitol=1058&capitol_vers=2015_v2.js trebuie de actualizat id_md - unde este cazul. Iti trimit id_md in fisier excel.  

@@ -1,0 +1,22 @@
+UPDATE CIS2.MD_RIND
+
+SET STATUT =  '3'
+--SELECT *
+--FROM CIS2.MD_RIND
+
+WHERE 
+FORM = 50 AND  
+capitol= 1058 and  capitol_vers=2015
+  AND STATUT = '1'
+-- AND 
+-- 
+-- RIND LIKE '4%'
+-- AND LENGTH(RIND) > 3
+
+AND ORDINE BETWEEN 5000 AND 6000
+
+AND RIND NOT IN ('50','51');
+
+--ORDER BY 
+--
+--ORDINE

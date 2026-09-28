@@ -1,0 +1,81 @@
+// FORM = 50
+// CAPITOL = 1066
+// Rânduri statice
+//
+// Autosume:
+// Rând.010 = Rând.020 + Rând.040, Col.*
+// Rând.040 = Rând.050 + Rând.070 + Rând.080, Col.*
+//
+// Capitolul 1066 are 22 coloane active.
+
+var cap1066RowIds = {
+    "010": "119212",
+    "020": "119208",
+    "030": "119210",
+    "040": "119206",
+    "050": "119207",
+    "060": "119213",
+    "070": "119209",
+    "080": "119211"
+};
+
+function sumCap1066_Rind040() {
+    var sourceRows = ["050", "070", "080"];
+
+    for (var col = 1; col <= 22; col++) {
+        var sum = 0;
+
+        for (var i = 0; i < sourceRows.length; i++) {
+            var rind = sourceRows[i];
+
+            sum += parseInt(
+                $("#50_1066_" + cap1066RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        $("#50_1066_" + cap1066RowIds["040"] + "_040_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function sumCap1066_Rind010() {
+    var sourceRows = ["020", "040"];
+
+    for (var col = 1; col <= 22; col++) {
+        var sum = 0;
+
+        for (var i = 0; i < sourceRows.length; i++) {
+            var rind = sourceRows[i];
+
+            sum += parseInt(
+                $("#50_1066_" + cap1066RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        $("#50_1066_" + cap1066RowIds["010"] + "_010_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function f_Capitol_1066() {
+    // Mai întâi calculăm rândul 040, deoarece rândul 010 depinde de el.
+    sumCap1066_Rind040();
+    sumCap1066_Rind010();
+}
+
+$(document).ready(function () {
+    f_Capitol_1066();
+
+    $("input:not([type='button']):not([readonly]):not([disabled])")
+        .on("change", f_Capitol_1066);
+
+    $(document).on(
+        "change",
+        "input:not([type='button']):not([readonly]):not([disabled])",
+        f_Capitol_1066
+    );
+});

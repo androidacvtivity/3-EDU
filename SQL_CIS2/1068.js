@@ -1,7 +1,3 @@
-// Modifica autosuma sa fie pe coloane - 
-//c1 =  sum la restul coloanelor pe fiecare rand 
-
-
 // FORM = 50
 // CAPITOL = 1060
 // Rânduri statice

@@ -1,6 +1,10 @@
-Creaza autosuma pentru cap 1066 
+Creaza autosuma pentru cap 1069 
 dupa exemplu precedent dar aici deja sunt 2 autosume 
 
-010 =  020+040 pe fiecare coloana 
+[CAP11_R020_C1]+[CAP11_R060_C1]=[CAP11_R010_C1];
+[CAP11_R020_C2]+[CAP11_R060_C2]=[CAP11_R010_C2];
+[CAP11_R020_C3]+[CAP11_R060_C3]=[CAP11_R010_C3];
 
-040  = 050+070+080
+[CAP11_R030_C1]+[CAP11_R040_C1]+[CAP11_R050_C1]=[CAP11_R020_C1];
+[CAP11_R030_C2]+[CAP11_R040_C2]+[CAP11_R050_C2]=[CAP11_R020_C2];
+[CAP11_R030_C3]+[CAP11_R040_C3]+[CAP11_R050_C3]=[CAP11_R020_C3];

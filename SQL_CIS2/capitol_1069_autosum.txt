@@ -1,0 +1,77 @@
+// FORM = 50
+// CAPITOL = 1069
+// Rânduri statice
+//
+// Autosume:
+// Rând.010 = Rând.020 + Rând.060, Col.1-3
+// Rând.020 = Rând.030 + Rând.040 + Rând.050, Col.1-3
+
+var cap1069RowIds = {
+    "010": "119217",
+    "020": "119218",
+    "030": "119219",
+    "040": "119222",
+    "050": "119220",
+    "060": "119223"
+};
+
+function sumCap1069_Rind020() {
+    var sourceRows = ["030", "040", "050"];
+
+    for (var col = 1; col <= 3; col++) {
+        var sum = 0;
+
+        for (var i = 0; i < sourceRows.length; i++) {
+            var rind = sourceRows[i];
+
+            sum += parseInt(
+                $("#50_1069_" + cap1069RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        $("#50_1069_" + cap1069RowIds["020"] + "_020_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function sumCap1069_Rind010() {
+    var sourceRows = ["020", "060"];
+
+    for (var col = 1; col <= 3; col++) {
+        var sum = 0;
+
+        for (var i = 0; i < sourceRows.length; i++) {
+            var rind = sourceRows[i];
+
+            sum += parseInt(
+                $("#50_1069_" + cap1069RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        $("#50_1069_" + cap1069RowIds["010"] + "_010_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function f_Capitol_1069() {
+    // Mai întâi calculăm rândul 020, deoarece rândul 010 depinde de el.
+    sumCap1069_Rind020();
+    sumCap1069_Rind010();
+}
+
+$(document).ready(function () {
+    f_Capitol_1069();
+
+    $("input:not([type='button']):not([readonly]):not([disabled])")
+        .on("change", f_Capitol_1069);
+
+    $(document).on(
+        "change",
+        "input:not([type='button']):not([readonly]):not([disabled])",
+        f_Capitol_1069
+    );
+});

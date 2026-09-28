@@ -1,0 +1,82 @@
+// FORM = 50
+// CAPITOL = 1065
+// Rânduri statice
+//
+// Autosume:
+// Rând.010 = Rând.020 + Rând.040, Col.*
+// Rând.040 = Rând.050 + Rând.070 + Rând.080, Col.*
+//
+// Capitolul 1065 are 10 coloane active.
+
+var cap1065RowIds = {
+    "010": "119202",
+    "020": "119195",
+    "030": "119196",
+    "040": "119198",
+    "050": "119199",
+    "060": "119200",
+    "070": "119201",
+    "080": "119197",
+    "090": "119194"
+};
+
+function sumCap1065_Rind040() {
+    var sourceRows = ["050", "070", "080"];
+
+    for (var col = 1; col <= 10; col++) {
+        var sum = 0;
+
+        for (var i = 0; i < sourceRows.length; i++) {
+            var rind = sourceRows[i];
+
+            sum += parseInt(
+                $("#50_1065_" + cap1065RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        $("#50_1065_" + cap1065RowIds["040"] + "_040_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function sumCap1065_Rind010() {
+    var sourceRows = ["020", "040"];
+
+    for (var col = 1; col <= 10; col++) {
+        var sum = 0;
+
+        for (var i = 0; i < sourceRows.length; i++) {
+            var rind = sourceRows[i];
+
+            sum += parseInt(
+                $("#50_1065_" + cap1065RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        $("#50_1065_" + cap1065RowIds["010"] + "_010_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function f_Capitol_1065() {
+    // Mai întâi calculăm rândul 040, deoarece rândul 010 depinde de el.
+    sumCap1065_Rind040();
+    sumCap1065_Rind010();
+}
+
+$(document).ready(function () {
+    f_Capitol_1065();
+
+    $("input:not([type='button']):not([readonly]):not([disabled])")
+        .on("change", f_Capitol_1065);
+
+    $(document).on(
+        "change",
+        "input:not([type='button']):not([readonly]):not([disabled])",
+        f_Capitol_1065
+    );
+});

@@ -1,0 +1,54 @@
+// FORM = 49
+// CAPITOL = 1052
+// Rânduri statice
+// Rând.010 = Rând.042 + Rând.052 + Rând.999, pentru fiecare coloană
+
+function sumCap1052_Rind010() {
+    var rowIds = {
+        "010": "117653",
+        "042": "117655",
+        "052": "119702",
+        "999": "117656"
+    };
+
+    // În capitolul 1052 sunt definite 4 coloane.
+    for (var col = 1; col <= 4; col++) {
+        var sum = 0;
+
+        sum += parseInt(
+            $("#49_1052_" + rowIds["042"] + "_042_" + col).val(),
+            10
+        ) || 0;
+
+        sum += parseInt(
+            $("#49_1052_" + rowIds["052"] + "_052_" + col).val(),
+            10
+        ) || 0;
+
+        sum += parseInt(
+            $("#49_1052_" + rowIds["999"] + "_999_" + col).val(),
+            10
+        ) || 0;
+
+        $("#49_1052_" + rowIds["010"] + "_010_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function f_Capitol_1052() {
+    sumCap1052_Rind010();
+}
+
+$(document).ready(function () {
+    f_Capitol_1052();
+
+    $("input:not([type='button']):not([readonly]):not([disabled])")
+        .on("change", f_Capitol_1052);
+
+    $(document).on(
+        "change",
+        "input:not([type='button']):not([readonly]):not([disabled])",
+        f_Capitol_1052
+    );
+});

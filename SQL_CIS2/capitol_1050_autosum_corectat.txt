@@ -1,0 +1,68 @@
+// FORM = 49
+// CAPITOL = 1050
+// Rânduri statice
+//
+// Autosumă:
+// Rând.01 = suma rândurilor 02–20, pe fiecare coloană.
+// Capitolul 1050 are 8 coloane active.
+
+var cap1050RowIds = {
+    "01": "117635",
+    "02": "117633",
+    "03": "117634",
+    "04": "117625",
+    "05": "117629",
+    "06": "117640",
+    "07": "117641",
+    "08": "117630",
+    "09": "117643",
+    "10": "117631",
+    "11": "117636",
+    "12": "117644",
+    "13": "117626",
+    "14": "117637",
+    "15": "117627",
+    "16": "117642",
+    "17": "117638",
+    "18": "117639",
+    "19": "117632",
+    "20": "117628"
+};
+
+function sumCap1050_Rind01() {
+    var sourceRows = ["02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"];
+
+    for (var col = 1; col <= 8; col++) {
+        var sum = 0;
+
+        for (var i = 0; i < sourceRows.length; i++) {
+            var rind = sourceRows[i];
+
+            sum += parseInt(
+                $("#49_1050_" + cap1050RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        $("#49_1050_" + cap1050RowIds["01"] + "_01_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function f_Capitol_1050() {
+    sumCap1050_Rind01();
+}
+
+$(document).ready(function () {
+    f_Capitol_1050();
+
+    $("input:not([type='button']):not([readonly]):not([disabled])")
+        .on("change", f_Capitol_1050);
+
+    $(document).on(
+        "change",
+        "input:not([type='button']):not([readonly]):not([disabled])",
+        f_Capitol_1050
+    );
+});

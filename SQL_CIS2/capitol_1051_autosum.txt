@@ -1,0 +1,61 @@
+// FORM = 49
+// CAPITOL = 1051
+// Rânduri statice
+//
+// Rânduri:
+// 01 - ID_MD = 117648 - Cereri depuse de înmatriculare
+// 02 - ID_MD = 117645 - Total înmatriculați
+//
+// Autosumă pe fiecare rând:
+// Total = Col.2 + Col.3 + Col.5
+// Rezultatul se înscrie în Col.1.
+
+var cap1051RowIds = {
+    "01": "117648",
+    "02": "117645"
+};
+
+function sumCap1051_Total() {
+    var rows = ["01", "02"];
+
+    for (var i = 0; i < rows.length; i++) {
+        var rind = rows[i];
+        var sum = 0;
+
+        sum += parseInt(
+            $("#49_1051_" + cap1051RowIds[rind] + "_" + rind + "_2").val(),
+            10
+        ) || 0;
+
+        sum += parseInt(
+            $("#49_1051_" + cap1051RowIds[rind] + "_" + rind + "_3").val(),
+            10
+        ) || 0;
+
+        sum += parseInt(
+            $("#49_1051_" + cap1051RowIds[rind] + "_" + rind + "_5").val(),
+            10
+        ) || 0;
+
+        $("#49_1051_" + cap1051RowIds[rind] + "_" + rind + "_1")
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function f_Capitol_1051() {
+    sumCap1051_Total();
+}
+
+$(document).ready(function () {
+    f_Capitol_1051();
+
+    $("input:not([type='button']):not([readonly]):not([disabled])")
+        .on("change", f_Capitol_1051);
+
+    $(document).on(
+        "change",
+        "input:not([type='button']):not([readonly]):not([disabled])",
+        f_Capitol_1051
+    );
+});

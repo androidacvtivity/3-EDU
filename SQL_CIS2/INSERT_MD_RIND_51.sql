@@ -1,19 +1,19 @@
-INSERT INTO CIS2.MD_RIND (
-    ID_MD,
-    FORM,
-    FORM_VERS,
-    CAPITOL,
-    CAPITOL_VERS,
-    RIND,
-    RIND_VERS,
-    DENUMIRE,
-    DECIMAL_POS,
-    COL_ACTIV,
-    ORDINE,
-    DATA_REG,
-    STATUT,
-    DINAMIC
-)
+--INSERT INTO CIS2.MD_RIND (
+--    ID_MD,
+--    FORM,
+--    FORM_VERS,
+--    CAPITOL,
+--    CAPITOL_VERS,
+--    RIND,
+--    RIND_VERS,
+--    DENUMIRE,
+--    DECIMAL_POS,
+--    COL_ACTIV,
+--    ORDINE,
+--    DATA_REG,
+--    STATUT,
+--    DINAMIC
+--)
 
 SELECT
 ROWNUM ID_MD,

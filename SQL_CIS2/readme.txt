@@ -1,10 +1,5 @@
-Creaza autosuma pentru cap 1069 
-dupa exemplu precedent dar aici deja sunt 2 autosume 
+in acest fisier trebuie de daugat autosuma pentru toate randurile  - statice si dinamice - care sunt in fisier excel 
 
-[CAP11_R020_C1]+[CAP11_R060_C1]=[CAP11_R010_C1];
-[CAP11_R020_C2]+[CAP11_R060_C2]=[CAP11_R010_C2];
-[CAP11_R020_C3]+[CAP11_R060_C3]=[CAP11_R010_C3];
-
-[CAP11_R030_C1]+[CAP11_R040_C1]+[CAP11_R050_C1]=[CAP11_R020_C1];
-[CAP11_R030_C2]+[CAP11_R040_C2]+[CAP11_R050_C2]=[CAP11_R020_C2];
-[CAP11_R030_C3]+[CAP11_R040_C3]+[CAP11_R050_C3]=[CAP11_R020_C3];
+Cap.I (Col.12) = Sum (Col.4, 6, 8, 10)  (Rînd.*)
+Cap.I (Col.14) = Sum (Col.5, 7, 9, 11)  (Rînd.*)
+dar  trebuie de adaugat corect - 

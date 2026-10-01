@@ -1,0 +1,69 @@
+
+//Adauga aici 
+// Cap.6 (Rînd.010) = Cap.6 ∑(Rînd.020,040) (Col*)  
+// Cap.6(Rînd.040) = Cap.6 ∑(Rînd.050,070,080) (Col *) 
+
+// FORM = 49
+// CAPITOL = 1054
+// Autosume pe coloane, pentru fiecare rând:
+// Col.1 = Col.3 + Col.5 + Col.7 + Col.9 + Col.11 + Col.13 + Col.15 + Col.17 + Col.19 + Col.21
+// Col.2 = Col.4 + Col.6 + Col.8 + Col.10 + Col.12 + Col.14 + Col.16 + Col.18 + Col.20 + Col.22
+
+function sumCap1054_Col1Col2() {
+    var rowIds = {
+        "010": "117681",
+        "020": "117684",
+        "030": "117683",
+        "040": "117679",
+        "050": "117685",
+        "060": "117680",
+        "070": "117686",
+        "080": "117682"
+    };
+
+    Object.keys(rowIds).forEach(function (rind) {
+        var sumCol1 = 0;
+        var sumCol2 = 0;
+
+        // Col.1 = suma coloanelor impare 3,5,...,21
+        for (var col = 3; col <= 21; col += 2) {
+            sumCol1 += parseInt(
+                $("#49_1054_" + rowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        // Col.2 = suma coloanelor pare 4,6,...,22
+        for (var col = 4; col <= 22; col += 2) {
+            sumCol2 += parseInt(
+                $("#49_1054_" + rowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        $("#49_1054_" + rowIds[rind] + "_" + rind + "_1")
+            .val(sumCol1 !== 0 ? sumCol1 : "")
+            .prop("readonly", true);
+
+        $("#49_1054_" + rowIds[rind] + "_" + rind + "_2")
+            .val(sumCol2 !== 0 ? sumCol2 : "")
+            .prop("readonly", true);
+    });
+}
+
+function f_Capitol_1054() {
+    sumCap1054_Col1Col2();
+}
+
+$(document).ready(function () {
+    f_Capitol_1054();
+
+    $("input:not([type='button']):not([readonly]):not([disabled])")
+        .on("change", f_Capitol_1054);
+
+    $(document).on(
+        "change",
+        "input:not([type='button']):not([readonly]):not([disabled])",
+        f_Capitol_1054
+    );
+});

@@ -1,0 +1,121 @@
+// FORM = 49
+// CAPITOL = 1054
+//
+// Autosume pe coloane, pentru fiecare rând:
+// Col.1 = Col.3 + Col.5 + Col.7 + Col.9 + Col.11 + Col.13 + Col.15 + Col.17 + Col.19 + Col.21
+// Col.2 = Col.4 + Col.6 + Col.8 + Col.10 + Col.12 + Col.14 + Col.16 + Col.18 + Col.20 + Col.22
+//
+// Autosume pe rânduri:
+// Cap.6 (Rînd.010) = Cap.6 ∑(Rînd.020,040) (Col.*)
+// Cap.6 (Rînd.040) = Cap.6 ∑(Rînd.050,070,080) (Col.*)
+
+var cap1054RowIds = {
+    "010": "117681",
+    "020": "117684",
+    "030": "117683",
+    "040": "117679",
+    "050": "117685",
+    "060": "117680",
+    "070": "117686",
+    "080": "117682"
+};
+
+function sumCap1054_Col1Col2() {
+    Object.keys(cap1054RowIds).forEach(function (rind) {
+        var sumCol1 = 0;
+        var sumCol2 = 0;
+
+        // Col.1 = suma coloanelor impare 3,5,...,21
+        for (var col = 3; col <= 21; col += 2) {
+            sumCol1 += parseInt(
+                $("#49_1054_" + cap1054RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        // Col.2 = suma coloanelor pare 4,6,...,22
+        for (var col = 4; col <= 22; col += 2) {
+            sumCol2 += parseInt(
+                $("#49_1054_" + cap1054RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        }
+
+        $("#49_1054_" + cap1054RowIds[rind] + "_" + rind + "_1")
+            .val(sumCol1 !== 0 ? sumCol1 : "")
+            .prop("readonly", true);
+
+        $("#49_1054_" + cap1054RowIds[rind] + "_" + rind + "_2")
+            .val(sumCol2 !== 0 ? sumCol2 : "")
+            .prop("readonly", true);
+    });
+}
+
+function sumCap1054_Rind040() {
+    var sourceRows = ["050", "070", "080"];
+
+    for (var col = 1; col <= 22; col++) {
+        var sum = 0;
+
+        sourceRows.forEach(function (rind) {
+            sum += parseInt(
+                $("#49_1054_" + cap1054RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        });
+
+        $("#49_1054_" + cap1054RowIds["040"] + "_040_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function sumCap1054_Rind010() {
+    var sourceRows = ["020", "040"];
+
+    for (var col = 1; col <= 22; col++) {
+        var sum = 0;
+
+        sourceRows.forEach(function (rind) {
+            sum += parseInt(
+                $("#49_1054_" + cap1054RowIds[rind] + "_" + rind + "_" + col).val(),
+                10
+            ) || 0;
+        });
+
+        $("#49_1054_" + cap1054RowIds["010"] + "_010_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+function f_Capitol_1054() {
+    // 1. Calculăm Col.1 și Col.2 pentru rândurile sursă.
+    sumCap1054_Col1Col2();
+
+    // 2. Calculăm întâi 040, fiindcă 010 depinde de 040.
+    sumCap1054_Rind040();
+
+    // 3. Calculăm 010.
+    sumCap1054_Rind010();
+
+    // 4. Recalculăm Col.1 și Col.2 pentru totaluri.
+    sumCap1054_Col1Col2();
+}
+
+$(document).ready(function () {
+    f_Capitol_1054();
+
+    $("input:not([type='button']):not([readonly]):not([disabled])")
+        .on("change", f_Capitol_1054);
+
+    $(document).on(
+        "change",
+        "input:not([type='button']):not([readonly]):not([disabled])",
+        f_Capitol_1054
+    );
+});
+
+
+2 EDU - este finisat complet in CIS2 
+Se lucreaza la 3 EDU - in cel mai scrut timp va fi si el finisat

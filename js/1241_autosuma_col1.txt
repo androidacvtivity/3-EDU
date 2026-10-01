@@ -1,0 +1,121 @@
+// FORM = 49
+// CAPITOL = 1241
+// Rânduri statice
+// Rând.01 = Rând.02 + Rând.03 + Rând.04 + Rând.05 + Rând.06 + Rând.07 + Rând.08, pentru fiecare coloană
+
+function sumCap1241_Rind01() {
+    var rowIds = {
+        "01": "117663",
+        "02": "117664",
+        "03": "117662",
+        "04": "117665",
+        "05": "117667",
+        "06": "117668",
+        "07": "117666",
+        "08": "117669"
+    };
+
+    // În capitolul 1241 sunt definite 8 coloane.
+    for (var col = 1; col <= 8; col++) {
+        var sum = 0;
+
+        sum += parseInt(
+            $("#49_1241_" + rowIds["02"] + "_02_" + col).val(),
+            10
+        ) || 0;
+
+        sum += parseInt(
+            $("#49_1241_" + rowIds["03"] + "_03_" + col).val(),
+            10
+        ) || 0;
+
+        sum += parseInt(
+            $("#49_1241_" + rowIds["04"] + "_04_" + col).val(),
+            10
+        ) || 0;
+
+        sum += parseInt(
+            $("#49_1241_" + rowIds["05"] + "_05_" + col).val(),
+            10
+        ) || 0;
+
+        sum += parseInt(
+            $("#49_1241_" + rowIds["06"] + "_06_" + col).val(),
+            10
+        ) || 0;
+
+        sum += parseInt(
+            $("#49_1241_" + rowIds["07"] + "_07_" + col).val(),
+            10
+        ) || 0;
+
+        sum += parseInt(
+            $("#49_1241_" + rowIds["08"] + "_08_" + col).val(),
+            10
+        ) || 0;
+
+        $("#49_1241_" + rowIds["01"] + "_01_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
+
+// Autosuma pe randuri:
+// Col.1 = Col.2 + Col.3 pentru randurile 01-08.
+function sumCap1241_Col1() {
+    var rowIds = {
+        "01": "117663",
+        "02": "117664",
+        "03": "117662",
+        "04": "117665",
+        "05": "117667",
+        "06": "117668",
+        "07": "117666",
+        "08": "117669"
+    };
+
+    Object.keys(rowIds).forEach(function (rind) {
+        var id = rowIds[rind];
+
+        var col2 = parseInt(
+            $("#49_1241_" + id + "_" + rind + "_2").val(),
+            10
+        ) || 0;
+
+        var col3 = parseInt(
+            $("#49_1241_" + id + "_" + rind + "_3").val(),
+            10
+        ) || 0;
+
+        var total = col2 + col3;
+
+        $("#49_1241_" + id + "_" + rind + "_1")
+            .val(total !== 0 ? total : "")
+            .prop("readonly", true);
+    });
+}
+
+function f_Capitol_1241() {
+    // Calculam Col.1 = Col.2 + Col.3 pe fiecare rand.
+    sumCap1241_Col1();
+
+    // Pastram autosuma existenta pentru Rand.01 pe toate coloanele.
+    sumCap1241_Rind01();
+
+    // Recalculam Col.1 pentru Rand.01 dupa autosuma verticala.
+    sumCap1241_Col1();
+}
+
+$(document).ready(function () {
+    f_Capitol_1241();
+
+    $("input:not([type='button']):not([readonly]):not([disabled])")
+        .on("change", f_Capitol_1241);
+
+    $(document).on(
+        "change",
+        "input:not([type='button']):not([readonly]):not([disabled])",
+        f_Capitol_1241
+    );
+});

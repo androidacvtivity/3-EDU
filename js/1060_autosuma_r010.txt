@@ -1,7 +1,3 @@
-//Adauga si aceasta autosuma te rog
-//Cap.III (Rind. 010) = Sum (Rînd.020-030)(Col *) 
-
-
 // FORM = 50
 // CAPITOL = 1060
 // Rânduri statice
@@ -32,7 +28,33 @@ function sumCap1060_Col1() {
     });
 }
 
+
+function sumCap1060_Rind010() {
+    var rowIds = {
+        "010": "119149",
+        "020": "119150",
+        "030": "119151"
+    };
+
+    for (var col = 1; col <= 5; col++) {
+        var sum =
+            (parseInt($("#50_1060_" + rowIds["020"] + "_020_" + col).val(), 10) || 0) +
+            (parseInt($("#50_1060_" + rowIds["030"] + "_030_" + col).val(), 10) || 0);
+
+        $("#50_1060_" + rowIds["010"] + "_010_" + col)
+            .val(sum !== 0 ? sum : "")
+            .prop("readonly", true);
+    }
+}
+
 function f_Capitol_1060() {
+    // 1. Calculam Col.1 pentru randurile sursa.
+    sumCap1060_Col1();
+
+    // 2. Rind.010 = Rind.020 + Rind.030 pe toate coloanele.
+    sumCap1060_Rind010();
+
+    // 3. Recalculam Col.1 pentru Rind.010 dupa autosuma verticala.
     sumCap1060_Col1();
 }
 

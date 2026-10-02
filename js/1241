@@ -46,3 +46,17 @@ HAVING
    CIS2.NVAL(SUM(CASE WHEN D.RIND BETWEEN '02' AND '08' THEN DECODE(CC.NR_COLUMN,'1', D.COL1, '2', D.COL2, '3', D.COL3, '4', D.COL4, '5', D.COL5, '6', D.COL6, '7', D.COL7, '8', D.COL8, '9', D.COL9,'10', D.COL10, '11', D.COL11, '12', D.COL12, '13', D.COL13)ELSE 0 END))
 
 
+            // 49-099: Cap.VIII (Col.1) ≥ (Col. impare) (Rînd.*)
+            cap8Rows.forEach(function (r) {
+                var c1 = toDecimal(values["CAP8_R" + r + "_C1"]);
+                [3, 5, 7, 9, 11, 13, 15, 17, 19, 21].forEach(function (c) {
+                    var cc = toDecimal(values["CAP8_R" + r + "_C" + c]);
+                    if (c1.lessThan(cc)) {
+                        errors.push({
+                            fieldName: "CAP8_R" + r + "_C1",
+                            weight: 80,
+                            msg: `Cod eroare 49-099: Cap.VIII Rînd.${r} Col.1 trebuie să fie ≥ Col.${c}: (${c1}) < (${cc}).`,
+                        });
+                    }
+                });
+            });

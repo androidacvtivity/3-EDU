@@ -1,0 +1,325 @@
+INSERT INTO CIS2.TABLE_OUT
+(
+    PERIOADA,
+    FORM,
+    FORM_VERS,
+    ID_MDTABLE,
+    COD_CUATM,
+    NR_SECTIE,
+    NUME_SECTIE,
+    NR_SECTIE1,
+    NUME_SECTIE1,
+    NR_SECTIE2,
+    NUME_SECTIE2,
+    NR_ROW,
+    ORDINE,
+    DECIMAL_POS,
+    NUME_ROW,
+    COL1,
+    COL2,
+    COL3,
+    COL4,
+    COL5,
+    COL6,
+    COL7,
+    COL8,
+    COL9,
+    COL10,
+    COL11,
+    COL12,
+    COL13,
+    COL14,
+    COL15
+)
+
+WITH SPEC AS
+(
+    SELECT
+        C.ITEM_CODE,
+        C.ITEM_CODE_VERS,
+        REPLACE(C.ITEM_CODE, '.', '') AS COD_SPEC,
+        C.NAME,
+        C.SHOW_ORDER AS ORDINE,
+        C.ITEM_PARENT,
+        C.ITEM_PATH,
+        C.A01
+
+    FROM CIS2.VW_CLS_CLASS_ITEM C
+
+    WHERE
+        C.CLASS_CODE = 'SPEC_3EDU'
+        AND C.ITEM_CODE_VERS = 2013
+        AND C.STATUS = '1'
+),
+
+DD AS
+(
+    SELECT
+        D.CUIIO,
+        D.CUIIO_VERS,
+        D.RIND,
+
+        CASE
+            WHEN MR.ORDINE NOT BETWEEN 5000 AND 5999
+                 AND TO_CHAR(SUBSTR(D.RIND, 2)) LIKE '0%'
+            THEN
+                REPLACE(
+                    LTRIM(TO_CHAR(SUBSTR(D.RIND, 2)), '0'),
+                    '.',
+                    ''
+                )
+
+            WHEN MR.ORDINE BETWEEN 5000 AND 5999
+            THEN
+                REPLACE(D.RIND, '.', '')
+
+            ELSE
+                REPLACE(
+                    TO_CHAR(SUBSTR(D.RIND, 2)),
+                    '.',
+                    ''
+                )
+
+        END AS RIND_MOD,
+
+        D.ID_MD,
+        D.RIND_VERS,
+        MR.ORDINE
+
+    FROM CIS2.VW_DATA_ALL D
+
+    INNER JOIN CIS2.MD_RIND MR
+        ON MR.ID_MD = D.ID_MD
+
+    WHERE
+        D.PERIOADA IN (:pPERIOADA)
+        AND D.FORM_VERS = :pFORM_VERS
+        AND D.FORM IN (50)
+        AND D.CAPITOL IN (1058)
+
+        AND MR.ID_MD NOT IN
+        (
+            SELECT
+                ID_MD
+
+            FROM CIS2.MD_RIND
+
+            WHERE
+                FORM IN (50)
+                AND CAPITOL IN (1058)
+                AND CAPITOL_VERS = 2015
+                AND STATUT = '1'
+                AND
+                (
+                    RIND IN
+                    (
+                        '10',
+                        '20',
+                        '30',
+                        '40',
+                        '50',
+                        '51',
+                        '60',
+                        '70',
+                        '90',
+                        '100',
+                        '110',
+                        '120'
+                    )
+                    OR ORDINE > 7000
+                )
+        )
+),
+
+L AS
+(
+    SELECT
+        CC.ITEM_CODE AS NR_ROW,
+        CC.ORDINE,
+        CC.NAME AS NUME_ROW,
+
+        --------------------------------------------------
+        -- TOTAL
+        --------------------------------------------------
+
+        CIS2.NVAL(SUM(D.COL12)) AS COL1,
+
+        CIS2.NVAL(SUM(D.COL13)) AS COL2,
+
+        CIS2.NVAL(SUM(D.COL12)) -
+        CIS2.NVAL(SUM(D.COL13)) AS COL3,
+
+        CIS2.NVAL(SUM(D.COL12)) -
+        CIS2.NVAL(SUM(D.COL14)) AS COL4,
+
+        CIS2.NVAL(SUM(D.COL14)) AS COL5,
+
+        --------------------------------------------------
+        -- NFI = 1
+        --------------------------------------------------
+
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (1)
+                 THEN D.COL12 END
+        )) AS COL6,
+
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (1)
+                 THEN D.COL13 END
+        )) AS COL7,
+
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (1)
+                 THEN D.COL12 END
+        )) -
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (1)
+                 THEN D.COL13 END
+        )) AS COL8,
+
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (1)
+                 THEN D.COL12 END
+        )) -
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (1)
+                 THEN D.COL14 END
+        )) AS COL9,
+
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (1)
+                 THEN D.COL14 END
+        )) AS COL10,
+
+        --------------------------------------------------
+        -- NFI = 25
+        --------------------------------------------------
+
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (25)
+                 THEN D.COL12 END
+        )) AS COL11,
+
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (25)
+                 THEN D.COL13 END
+        )) AS COL12,
+
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (25)
+                 THEN D.COL12 END
+        )) -
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (25)
+                 THEN D.COL13 END
+        )) AS COL13,
+
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (25)
+                 THEN D.COL12 END
+        )) -
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (25)
+                 THEN D.COL14 END
+        )) AS COL14,
+
+        CIS2.NVAL(SUM(
+            CASE WHEN R.NFI IN (25)
+                 THEN D.COL14 END
+        )) AS COL15
+
+    FROM CIS2.VW_DATA_ALL D
+
+    ------------------------------------------------------
+    -- IDENTIFICAREA RIND_MOD
+    ------------------------------------------------------
+
+    INNER JOIN DD
+        ON  DD.ID_MD = D.ID_MD
+        AND DD.CUIIO = D.CUIIO
+        AND DD.RIND = D.RIND
+        AND DD.RIND_VERS = D.RIND_VERS
+        AND DD.CUIIO_VERS = D.CUIIO_VERS
+
+    ------------------------------------------------------
+    -- IDENTIFICAREA SPECIALITATII
+    ------------------------------------------------------
+
+    INNER JOIN SPEC C
+        ON C.COD_SPEC = DD.RIND_MOD
+
+    ------------------------------------------------------
+    -- AGREGAREA IERARHICA DIRECT PRIN ITEM_PATH
+    ------------------------------------------------------
+
+    INNER JOIN SPEC CC
+        ON INSTR(
+            ';' || C.ITEM_PATH,
+            ';' || CC.ITEM_CODE || ';'
+        ) > 0
+
+    ------------------------------------------------------
+    -- NFI
+    ------------------------------------------------------
+
+    INNER JOIN CIS2.RENIM R
+        ON  D.CUIIO = R.CUIIO
+        AND D.CUIIO_VERS = R.CUIIO_VERS
+
+    WHERE
+        D.PERIOADA IN (:pPERIOADA)
+        AND D.FORM_VERS = :pFORM_VERS
+        AND (:pID_MDTABLE = :pID_MDTABLE)
+        AND D.CUATM_FULL LIKE '%' || :pCOD_CUATM || ';%'
+        AND D.FORM IN (50)
+        AND D.CAPITOL IN (1058)
+
+    GROUP BY
+        CC.ITEM_CODE,
+        CC.ORDINE,
+        CC.NAME
+)
+
+----------------------------------------------------------
+-- REZULTATUL FINAL
+----------------------------------------------------------
+
+SELECT
+    :pPERIOADA AS PERIOADA,
+    :pFORM AS FORM,
+    :pFORM_VERS AS FORM_VERS,
+    :pID_MDTABLE AS ID_MDTABLE,
+    :pCOD_CUATM AS COD_CUATM,
+
+    '0' AS NR_SECTIE,
+    '0' AS NUME_SECTIE,
+    '0' AS NR_SECTIE1,
+    '0' AS NUME_SECTIE1,
+    '0' AS NR_SECTIE2,
+    '0' AS NUME_SECTIE2,
+
+    L.NR_ROW,
+    L.ORDINE,
+    '00000000000000000' AS DECIMAL_POS,
+    L.NUME_ROW,
+
+    NULLIF(L.COL1,  0) AS COL1,
+    NULLIF(L.COL2,  0) AS COL2,
+    NULLIF(L.COL3,  0) AS COL3,
+    NULLIF(L.COL4,  0) AS COL4,
+    NULLIF(L.COL5,  0) AS COL5,
+    NULLIF(L.COL6,  0) AS COL6,
+    NULLIF(L.COL7,  0) AS COL7,
+    NULLIF(L.COL8,  0) AS COL8,
+    NULLIF(L.COL9,  0) AS COL9,
+    NULLIF(L.COL10, 0) AS COL10,
+    NULLIF(L.COL11, 0) AS COL11,
+    NULLIF(L.COL12, 0) AS COL12,
+    NULLIF(L.COL13, 0) AS COL13,
+    NULLIF(L.COL14, 0) AS COL14,
+    NULLIF(L.COL15, 0) AS COL15
+
+FROM L
+
+ORDER BY
+    L.ORDINE

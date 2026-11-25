@@ -68,6 +68,7 @@ WHERE
   (D.CUATM_FULL LIKE '%' ||:pCOD_CUATM||';%') AND
   D.FORM = 50 AND 
   D.CAPITOL IN (1058) AND 
+  
   (
   (
   D.RIND IN ('10','20','30','40','50','60','90','100','110','120')
